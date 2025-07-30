@@ -1,0 +1,39 @@
+# Variables de entorno
+.env
+.env.local
+
+# Archivos de audio
+*.wav
+audio_*.wav
+
+# Archivos de respuesta
+respuesta_*.md
+
+# Archivos de memoria y sesiones
+full_memory.json
+optimized_memory.json
+session_archive_*.json
+archivo_historico_*.zip
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
