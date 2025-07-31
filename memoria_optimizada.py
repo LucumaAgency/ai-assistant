@@ -48,7 +48,10 @@ class MemoriaOptimizada:
         # Verificar si es importante
         important_keywords = [
             'importante', 'recordar', 'no olvides', 'guarda esto',
-            'mi nombre es', 'vivo en', 'trabajo en', 'prefiero'
+            'mi nombre es', 'vivo en', 'trabajo en', 'prefiero',
+            'reunión', 'cita', 'evento', 'cliente', 'empresa',
+            'proyecto', 'tarea', 'deadline', 'fecha límite',
+            'teléfono', 'email', 'dirección', 'contacto'
         ]
         
         if any(keyword in content.lower() for keyword in important_keywords):
@@ -92,6 +95,25 @@ class MemoriaOptimizada:
     def get_context_for_ai(self):
         """Prepara el contexto optimizado para enviar a la IA"""
         messages = []
+        
+        # CRÍTICO: Instrucciones explícitas sobre el uso de memoria
+        system_prompt = """Eres un asistente virtual con memoria persistente. IMPORTANTE:
+
+1. TIENES ACCESO a conversaciones anteriores, información guardada y contexto histórico.
+2. SIEMPRE debes usar la información disponible en tu contexto para responder.
+3. Cuando el usuario pregunte sobre algo mencionado anteriormente, BUSCA en el contexto y RESPONDE con esa información.
+4. NUNCA digas que no puedes recordar o que no tienes acceso a conversaciones anteriores.
+5. Si la información está en tu contexto, ÚSALA.
+
+Tu memoria incluye:
+- Resumen de conversaciones anteriores
+- Información importante guardada
+- Mensajes recientes de la conversación actual"""
+        
+        messages.append({
+            "role": "system",
+            "content": system_prompt
+        })
         
         # Agregar resumen si existe
         if self.summary:
