@@ -143,17 +143,17 @@ def process_audio_with_google(file_path):
         # Detectar complejidad y elegir modelo
         complexity = detect_complexity(transcription_text)
         if complexity == 'simple':
-            model = 'gpt-3.5-turbo'
-            stats['gpt35_calls'] += 1
-            model_info = "GPT-3.5"
+            model = 'gpt-4o-mini'
+            stats['gpt35_calls'] += 1  # Reutilizamos el contador
+            model_info = "GPT-4o-mini"
         elif complexity == 'complex':
             model = 'gpt-4'
             stats['gpt4_calls'] += 1
             model_info = "GPT-4"
         else:
-            model = 'gpt-3.5-turbo'  # Por defecto usar el económico
+            model = 'gpt-4o-mini'  # Por defecto usar GPT-4o-mini
             stats['gpt35_calls'] += 1
-            model_info = "GPT-3.5"
+            model_info = "GPT-4o-mini"
         
         status_label.config(text=f"Procesando con {model_info}...")
         
@@ -178,8 +178,8 @@ def process_audio_with_google(file_path):
         
         if model == 'gpt-4':
             cost = (response.usage.prompt_tokens * 0.03 + response.usage.completion_tokens * 0.06) / 1000
-        else:  # gpt-3.5-turbo
-            cost = (response.usage.prompt_tokens * 0.0015 + response.usage.completion_tokens * 0.002) / 1000
+        else:  # gpt-4o-mini
+            cost = (response.usage.prompt_tokens * 0.00015 + response.usage.completion_tokens * 0.0006) / 1000
         
         stats['total_cost'] += cost
         
@@ -252,7 +252,7 @@ def update_stats():
     total_messages = len(memoria.recent_messages) + len(memoria.important_messages)
     stats_label.config(
         text=f"📊 Mensajes: {total_messages} | "
-        f"GPT-4: {stats['gpt4_calls']} | GPT-3.5: {stats['gpt35_calls']} | "
+        f"GPT-4: {stats['gpt4_calls']} | GPT-4o-mini: {stats['gpt35_calls']} | "
         f"Costo total: ${stats['total_cost']:.2f} | "
         f"Ahorrado en Whisper: ${stats['whisper_saved']:.2f}"
     )
@@ -273,7 +273,7 @@ def show_savings():
 
 🚀 Optimizaciones aplicadas:
 ✓ Google Speech en vez de Whisper
-✓ GPT-3.5 para consultas simples ({stats['gpt35_calls']} veces)
+✓ GPT-4o-mini para consultas simples ({stats['gpt35_calls']} veces)
 ✓ GPT-4 solo cuando necesario ({stats['gpt4_calls']} veces)
 ✓ Límite de tokens por respuesta
 ✓ Contexto reducido (máx {max_recent} mensajes)"""
@@ -392,7 +392,7 @@ stats_label.pack(pady=2)
 conversation_text.insert(END, "🤖 Asistente de Voz IA v4 - Optimizado\n", "system")
 conversation_text.insert(END, "✨ Ahora con Google Speech Recognition (GRATIS)\n", "system")
 conversation_text.insert(END, "💡 Detección automática de complejidad\n", "system")
-conversation_text.insert(END, "💰 Uso inteligente de GPT-3.5 vs GPT-4\n\n", "system")
+conversation_text.insert(END, "💰 Uso inteligente de GPT-4o-mini vs GPT-4\n\n", "system")
 
 # Ejecutar la interfaz
 root.mainloop()
